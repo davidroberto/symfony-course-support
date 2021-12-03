@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/bookdetails.css') }}">
+{% endblock stylesheets %}
+
+{% block main %}
+    <article class="book-detail">
+        <div class="book-image">
+            <img class="book-image" src="{{ book.image }}" title="{{ book.title }}" alt="photo de la couverture du livre">
+        </div>
+        <div class="card-text">
+            <h2>{{ book.title }}</h2>
+            <h3>{{ book.author }}</h3>
+            <div class="date"></div>
+                <em>Date de publication : {{ book.publishedAt | date('d/m/y') }}</em>
+            </div>
+        </div>
+    </article>
+{% endblock main %}
+
