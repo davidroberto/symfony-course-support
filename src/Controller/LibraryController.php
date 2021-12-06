@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\AuthorRepository;
+use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,17 +15,23 @@ class LibraryController extends AbstractController
      */
     public function home()
     {
-        $array = array_slice($this->books, -3);
-
-        return $this->render("home.html.twig", ['home'=> $array]);
+        $books = [];
+        return $this->render("home.html.twig", ['home'=> $books]);
     }
 
     /**
      * @Route ("/books", name="books")
      */
-    public function books()
+    // pour instancier la classe BookRepository
+    // j'utilise l'autowire de Symfony
+    // et je passe en parametres de la méthode de controleur
+    // le nom de la classe "BookRepository" et une variables
+    // dans laquelle je veux que symfony m'instancie la classe
+    public function books(BookRepository $bookRepository)
     {
-
+        // j'utilise la méthode findAll de la classe BookRepository
+        // pour récupérer tous les livres de la table book
+        $books = $bookRepository->findAll();
 
         return $this->render("books.html.twig",['books'=> $books]);
     }
@@ -31,9 +39,11 @@ class LibraryController extends AbstractController
     /**
      * @Route ("/book/{id}", name="book")
      */
-    public function book($id)
+    public function book($id, BookRepository $bookRepository)
     {
-        return $this->render("book.html.twig",['book'=> $this->books[$id]]);
+        $book = $bookRepository->find($id);
+
+        return $this->render("book.html.twig",['book'=> $book]);
     }
 
 }

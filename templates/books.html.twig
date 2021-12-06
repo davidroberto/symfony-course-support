@@ -11,9 +11,9 @@
                         <h2>{{ books.title }}</h2>
                         <h3>{{ books.author }}</h3>
                     </div>
-                    <div class="card-image">
-                        <img src="{{ books.image }}" alt="Image du livre">
-                    </div>
+{#                    <div class="card-image">#}
+{#                        <img src="{{ books.image }}" alt="Image du livre">#}
+{#                    </div>#}
                     <a class="link" href="{{ path('book', {"id": books.id}) }}">En savoir plus</a>
                 </div>
             {% endfor %}
