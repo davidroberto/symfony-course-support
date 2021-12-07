@@ -48,6 +48,24 @@ class BookController extends AbstractController
     }
 
     /**
+     * @Route("/book/update/{id}", name="book_update")
+     */
+    public function updateBook($id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
+       // aller un chercher un livre (doctrine va me donner un objet, une instance de la classe Book)
+        $book = $bookRepository->find($id);
+
+        // modifier les valeurs via les setters
+        $book->setTitle('Mad Max reloaded');
+
+        // enregistrer en bdd avec l'entity manager
+        $entityManager->persist($book);
+        $entityManager->flush();
+
+        return $this->render('book_update.html.twig');
+    }
+
+    /**
      * @Route("/book/{id}", name="book")
      */
     public function book($id, BookRepository $bookRepository)
