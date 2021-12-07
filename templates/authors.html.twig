@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/books.css') }}">{% endblock stylesheets %}
+
+{% block main %}
+    <main>
+        <section class="section">
+            {% for author in authors %}
+                <div class="card">
+                    <div class="card-text">
+                        <h2>{{ author.firstName }} {{ author.lastName }}</h2>
+                        {% if author.deathDate %}
+                            <h3>Mort le : {{ author.deathDate | date('D-m-Y') }}</h3>
+                        {% else %}
+                            Cet auteur n'est malheureusement pas encore mort
+                        {% endif %}
+                        <a href="{{ path('author', {'id': author.id}) }}">Voir plus d'infos</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+{% endblock main%}
