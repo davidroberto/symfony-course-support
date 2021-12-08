@@ -44,7 +44,7 @@ class BookController extends AbstractController
         $entityManager->persist($book);
         $entityManager->flush();
 
-        return $this->render('book_create.html.twig');
+        return $this->render("book_create.html.twig");
     }
 
     /**
@@ -62,7 +62,7 @@ class BookController extends AbstractController
         $entityManager->persist($book);
         $entityManager->flush();
 
-        return $this->render('book_update.html.twig');
+        return $this->render("book_update.html.twig");
     }
 
     /**
@@ -73,6 +73,19 @@ class BookController extends AbstractController
         $book = $bookRepository->find($id);
 
         return $this->render("book.html.twig",['book'=> $book]);
+    }
+
+    /**
+     * @Route("/book/delete/{id}", name="book_delete")
+     */
+    public function bookDelete($id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
+        $book = $bookRepository->find($id);
+
+        $entityManager->remove($book);
+        $entityManager->flush();
+
+        return $this->render("book_delete.html.twig");
     }
 
 
