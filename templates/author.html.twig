@@ -13,6 +13,10 @@
             {% else %}
                 Cet auteur n'est malheureusement pas encore mort
             {% endif %}
+
+            {% for book in author.books %}
+                <p>{{ book.title }}</p>
+            {% endfor %}
         </div>
     </div>
 {% endblock main %}

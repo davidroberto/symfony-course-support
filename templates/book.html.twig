@@ -11,7 +11,9 @@
 {#        </div>#}
         <div class="card-text">
             <h2>{{ book.title }}</h2>
-            <h3>{{ book.author.firstName }} {{ book.author.lastName }}</h3>
+            {% if book.author %}
+                <h3>{{ book.author.firstName }} {{ book.author.lastName }}</h3>
+            {% endif %}
             <div class="date"></div>
                 <em>Date de publication : {{ book.publishedAt | date('d/m/y') }}</em>
             </div>

@@ -35,7 +35,7 @@ class Book
     private $publishedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Author::class)
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="books")
      */
     private $author;
 
