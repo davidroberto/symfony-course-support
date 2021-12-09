@@ -7,6 +7,7 @@ use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminBookController extends AbstractController
@@ -47,7 +48,8 @@ class AdminBookController extends AbstractController
     /**
      * @Route("/admin/book/create", name="admin_book_create")
      */
-    public function createBook()
+    //Récupére la classe Request car elle va contenir les données POST du form
+    public function createBook(Request $request, EntityManagerInterface $entityManager)
     {
         // je veux créer un nouvel enregistrement dans la table book
         // donc je créé une instance de l'entité Book
@@ -58,6 +60,20 @@ class AdminBookController extends AbstractController
         // et je lui associe l'instance de l'entité Book
         $bookForm = $this->createForm(BookType::class, $book);
 
+        // Asssocier le formulaire à la classe Request (le formulaire
+        // lui est associé à l'instance de l'entité Book)
+        $bookForm->handleRequest($request);
+
+        // Vérifier que le formulaire a été envoyé
+        // le isValid empeche que des données invalides par rapports aux types de colonnes
+        // soient insérées + prévient les injections SQL
+        if ($bookForm->isSubmitted() && $bookForm->isValid()) {
+            // On enregistre l'entité en bdd avec l'entité manager (vu que l'instance de l'entité est reliée
+            // au form et que le formulaire est reliée à la classe Request), Symfony va
+            // automatiquement mettre les données du form dans l'instance de l'entité
+            $entityManager->persist($book);
+            $entityManager->flush();
+        }
 
         // j'envoie à mon twig la variable contenant le formulaire
         // préparé pour l'affichage (avec la méthode createView())
