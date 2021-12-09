@@ -4,11 +4,13 @@
 {% block main %}
 <main>
     <section class="section">
-        {% for books in lastBooks %}
+        {% for book in lastBooks %}
             <div class="card">
                 <div class="card-text">
-                    <h2>{{ books.title }}</h2>
-                    <h3>{{ books.author }}</h3>
+                    <h2>{{ book.title }}</h2>
+                    {% if book.author %}
+                        <h3>{{ book.author.firstName }} {{ book.author.lastName }}</h3>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
