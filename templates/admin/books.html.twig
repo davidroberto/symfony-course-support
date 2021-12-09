@@ -4,6 +4,7 @@
 
 {% block main %}
     <main>
+        <a class="link" href="{{ path('admin_book_create') }}">Créer un livre</a>
         <section class="section">
             {% for book in books %}
                 <div class="card">
@@ -14,6 +15,7 @@
                         {% endif %}
                     </div>
                     <a class="link" href="{{ path('admin_book', {"id": book.id}) }}">Voir le livre</a>
+                    <a class="link" href="{{ path('admin_book_update', {"id": book.id}) }}">Modifier le livre</a>
                     <a class="link" href="{{ path('admin_book_delete', {"id": book.id}) }}">Supprimer le livre</a>
                 </div>
             {% endfor %}

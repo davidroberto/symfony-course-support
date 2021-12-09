@@ -85,19 +85,36 @@ class AdminBookController extends AbstractController
     /**
      * @Route("/admin/book/update/{id}", name="admin_book_update")
      */
-    public function updateBook($id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    public function updateBook($id, Request $request, BookRepository $bookRepository, EntityManagerInterface $entityManager)
     {
-       // aller un chercher un livre (doctrine va me donner un objet, une instance de la classe Book)
+        // je récupère un livre en bdd pour le mettre à jour
         $book = $bookRepository->find($id);
 
-        // modifier les valeurs via les setters
-        $book->setTitle('Mad Max reloaded');
+        // j'utilise la méthode createForm (d'AbstractController) qui va me permettre de créer un
+        // formulaire en utilisant le gabarit généré (BookType) en lignes de commandes
+        // et je lui associe l'instance de l'entité Book
+        $bookForm = $this->createForm(BookType::class, $book);
 
-        // enregistrer en bdd avec l'entity manager
-        $entityManager->persist($book);
-        $entityManager->flush();
+        // Asssocier le formulaire à la classe Request (le formulaire
+        // lui est associé à l'instance de l'entité Book)
+        $bookForm->handleRequest($request);
 
-        return $this->render("admin/book_update.html.twig");
+        // Vérifier que le formulaire a été envoyé
+        // le isValid empeche que des données invalides par rapports aux types de colonnes
+        // soient insérées + prévient les injections SQL
+        if ($bookForm->isSubmitted() && $bookForm->isValid()) {
+            // On enregistre l'entité en bdd avec l'entité manager (vu que l'instance de l'entité est reliée
+            // au form et que le formulaire est reliée à la classe Request), Symfony va
+            // automatiquement mettre les données du form dans l'instance de l'entité
+            $entityManager->persist($book);
+            $entityManager->flush();
+        }
+
+        // j'envoie à mon twig la variable contenant le formulaire
+        // préparé pour l'affichage (avec la méthode createView())
+        return $this->render("admin/book_update.html.twig", [
+            'bookForm' => $bookForm->createView()
+        ]);
     }
 
     /**
