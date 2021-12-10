@@ -2,7 +2,32 @@
 
 {% block main %}
 
-    {{ form(bookForm) }}
+    {{ form_start(bookForm) }}
+
+        {{ form_label(bookForm.title, 'titre', {
+            'label_attr': {
+                'class': 'testLabelClass'
+            }
+        }) }}
+
+        {{ form_widget(bookForm.title, {
+            'attr': {
+                'class': 'testClass'
+            }
+        }) }}
+
+        {{ form_label(bookForm.nbPages) }}
+        {{ form_widget(bookForm.nbPages) }}
+
+        {{ form_label(bookForm.publishedAt) }}
+        {{ form_widget(bookForm.publishedAt) }}
+
+        {{ form_label(bookForm.author) }}
+        {{ form_widget(bookForm.author) }}
+
+        {{ form_widget(bookForm.submit) }}
+
+    {{ form_end(bookForm) }}
 
 {% endblock %}
 

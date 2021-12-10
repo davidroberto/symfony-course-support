@@ -24,7 +24,7 @@ class BookType extends AbstractType
                     return $author->getFirstName() . ' ' .  $author->getLastName();
                 }
             ])
-            ->add('valider', SubmitType::class)
+            ->add('submit', SubmitType::class)
         ;
     }
 
