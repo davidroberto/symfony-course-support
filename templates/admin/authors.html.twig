@@ -5,6 +5,7 @@
 {% block main %}
     <main>
         <section class="section">
+            <a href="{{ path('admin_author_create')}}">Créer un auteur</a>
             {% for author in authors %}
                 <div class="card">
                     <div class="card-text">
@@ -15,6 +16,7 @@
                             Cet auteur n'est malheureusement pas encore mort
                         {% endif %}
                         <a href="{{ path('admin_author', {'id': author.id}) }}">Voir l'auteur</a>
+                        <a href="{{ path('admin_author_update', {'id': author.id}) }}">Modifier l'auteur</a>
                         <a href="{{ path('admin_author_delete', {'id': author.id}) }}">Supprimer l'auteur</a>
                     </div>
                 </div>
