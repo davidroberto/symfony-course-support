@@ -8,17 +8,17 @@ use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PageController extends AbstractController
+class DashboardController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/admin", name="dashboard")
      */
-    public function home(BookRepository $bookRepository, AuthorRepository $authorRepository)
+    public function dashboard(BookRepository $bookRepository, AuthorRepository $authorRepository)
     {
         $lastBooks = $bookRepository->findBy([], ['id' => 'DESC'], 3);
         $lastAuthors = $authorRepository->findBy([], ['id' => 'DESC'], 3);
 
-        return $this->render("home.html.twig", [
+        return $this->render("admin/dashboard.html.twig", [
             'lastBooks'=> $lastBooks,
             'lastAuthors' => $lastAuthors
         ]);

@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "admin/base.html.twig" %}
 
 
 {% block main %}
@@ -14,7 +14,7 @@
                 </div>
             </div>
         {% endfor %}
-        <a href="{{ path('books') }}">Voir tous les livres</a>
+        <a href="{{ path('admin_books') }}">Voir tous les livres</a>
     </section>
 
     <section class="section">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         {% endfor %}
-        <a href="{{ path('authors') }}">Voir tous les auteurs</a>
+        <a href="{{ path('admin_authors') }}">Voir tous les auteurs</a>
     </section>
 </main>
 {% endblock main%}

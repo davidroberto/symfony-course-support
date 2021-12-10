@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends "admin/base.html.twig" %}
 
 {% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/books.css') }}">{% endblock stylesheets %}
 
@@ -14,7 +14,8 @@
                         {% else %}
                             Cet auteur n'est malheureusement pas encore mort
                         {% endif %}
-                        <a href="{{ path('author', {'id': author.id}) }}">Voir plus d'infos</a>
+                        <a href="{{ path('admin_author', {'id': author.id}) }}">Voir l'auteur</a>
+                        <a href="{{ path('admin_author_delete', {'id': author.id}) }}">Supprimer l'auteur</a>
                     </div>
                 </div>
             {% endfor %}
