@@ -38,13 +38,6 @@ class AdminBookController extends AbstractController
     }
 
 
-
-    ////////////////////////////////////////////
-    /// ////////////////////////////////////////////
-    /// ////////////////////////////////////////////
-    /// ////////////////////////////////////////////
-
-
     /**
      * @Route("/admin/book/create", name="admin_book_create")
      */
@@ -73,6 +66,11 @@ class AdminBookController extends AbstractController
             // automatiquement mettre les données du form dans l'instance de l'entité
             $entityManager->persist($book);
             $entityManager->flush();
+
+            // permet d'enregistré un message qui devra ensuite être affiché dans le twig
+            $this->addFlash('success', "Le livre a bien été enregistré !");
+
+            return $this->redirectToRoute('admin_books');
         }
 
         // j'envoie à mon twig la variable contenant le formulaire
@@ -125,6 +123,24 @@ class AdminBookController extends AbstractController
         $book = $bookRepository->find($id);
 
         return $this->render("admin/book.html.twig",['book'=> $book]);
+    }
+
+
+    /**
+     * @Route("/admin/search", name="admin_search_books")
+     */
+    public function searchBooks(BookRepository $bookRepository, Request $request)
+    {
+
+        // je récupère ce que tu l'utilisateur a recherché grâce à la classe Request
+        $word = $request->query->get('q');
+
+        // je fais ma requête en BDD grâce à la méthode que j'ai créée searchByTitle
+        $books = $bookRepository->searchByTitle($word);
+        
+        return $this->render('admin/books_search.html.twig', [
+            'books' => $books
+        ]);
     }
 
 }
