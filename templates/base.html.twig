@@ -1,0 +1,33 @@
+<!--Dans un nouveau .html.twig, que je nomme base.html.twig, j'intègre mon header et mon footer
+Cela va me permettre de conserver le même header et le même footer dans chacune de mes pages,
+et donc d'éviter de les copier à chaque fois sur une page.
+Cette page est vulgairement mon gabarit.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Dans le title de ma page base, j'appelle la fonction block metatitle qui va me permettre
+    d'afficher mon metatitle sur toutes les pages de mon site-->
+    <title>{% block metatitle %}La bibliothèque pour tous{% endblock metatitle%}</title>
+    <!--J'utilise la balise link et la fonction asset pour rattacher ma feuille de style à mon html-->
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bookdetails.css') }}">
+
+</head>
+<body>
+<header class="header">
+    <h1>LA BIBLIOTHÈQUE POUR TOUS</h1>
+    <nav class="nav-bar">
+        <ul class="menu">
+        </ul>
+    </nav>
+</header>
+<main>
+
+    {% block main %}{% endblock main %}
+
+</main>
+<footer class="footer">
+</footer>
+</body>
+</html>

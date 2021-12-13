@@ -137,7 +137,7 @@ class AdminBookController extends AbstractController
 
         // je fais ma requête en BDD grâce à la méthode que j'ai créée searchByTitle
         $books = $bookRepository->searchByTitle($word);
-        
+
         return $this->render('admin/books_search.html.twig', [
             'books' => $books
         ]);
