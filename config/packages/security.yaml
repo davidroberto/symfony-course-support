@@ -23,6 +23,7 @@ security:
 
             logout:
                 path: app_logout
+                target: login
 
             form_login:
                 # "login" is the name of the route created previously

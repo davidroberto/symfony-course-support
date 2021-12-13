@@ -28,7 +28,12 @@ Cette page est vulgairement mon gabarit.-->
             <li class="main-menu-element">
                 <a href="{{ path('admin_authors') }}">Les auteurs</a>
             </li>
+            <li class="main-menu-element">
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            </li>
         </ul>
+
+        <p>Vous êtes connecté en tant que {{ app.user.email }}</p>
 
         <form action="{{ path('admin_search_books') }}">
             <input type="text" name="q">
