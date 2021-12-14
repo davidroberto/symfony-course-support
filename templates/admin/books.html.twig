@@ -10,6 +10,7 @@
                 <div class="card">
                     <div class="card-text">
                         <h2>{{ book.title }}</h2>
+                        <img src="{{ asset('uploads/cover/'~book.coverFilename) }}" alt="">
                         {% if book.author %}
                             <h3>{{ book.author.firstName }} {{ book.author.lastName }}</h3>
                         {% endif %}

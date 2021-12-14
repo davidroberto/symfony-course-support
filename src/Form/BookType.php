@@ -7,6 +7,7 @@ use App\Entity\Book;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,6 +27,10 @@ class BookType extends AbstractType
                 'choice_label' => function ($author) {
                     return $author->getFirstName() . ' ' .  $author->getLastName();
                 }
+            ])
+            ->add('coverFilename', FileType::class, [
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('submit', SubmitType::class)
         ;

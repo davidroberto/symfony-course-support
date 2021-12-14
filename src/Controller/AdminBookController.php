@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminBookController extends AbstractController
 {
@@ -41,40 +42,43 @@ class AdminBookController extends AbstractController
     /**
      * @Route("/admin/book/create", name="admin_book_create")
      */
-    //Récupére la classe Request car elle va contenir les données POST du form
-    public function createBook(Request $request, EntityManagerInterface $entityManager)
+    public function createBook(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
-        // je veux créer un nouvel enregistrement dans la table book
-        // donc je créé une instance de l'entité Book
         $book = new Book();
-
-        // j'utilise la méthode createForm (d'AbstractController) qui va me permettre de créer un
-        // formulaire en utilisant le gabarit généré (BookType) en lignes de commandes
-        // et je lui associe l'instance de l'entité Book
         $bookForm = $this->createForm(BookType::class, $book);
-
-        // Asssocier le formulaire à la classe Request (le formulaire
-        // lui est associé à l'instance de l'entité Book)
         $bookForm->handleRequest($request);
 
-        // Vérifier que le formulaire a été envoyé
-        // le isValid empeche que des données invalides par rapports aux types de colonnes
-        // soient insérées + prévient les injections SQL
         if ($bookForm->isSubmitted() && $bookForm->isValid()) {
-            // On enregistre l'entité en bdd avec l'entité manager (vu que l'instance de l'entité est reliée
-            // au form et que le formulaire est reliée à la classe Request), Symfony va
-            // automatiquement mettre les données du form dans l'instance de l'entité
+            // gestion de l'upload d'image
+            // 1) récupérer le fichier uploadé
+            $coverFile = $bookForm->get('coverFilename')->getData();
+
+            if ($coverFile) {
+                // 2) récupérer le nom du fichier uploadé
+                $originalFilename = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                // 3) renommer le fichier avec un nom unique
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
+
+                // 4) déplacer le fichier dans le dossier publique
+                $coverFile->move(
+                    $this->getParameter('cover_directory'),
+                    $newFilename
+                );
+
+                // 5) enregistrer le nom du fichier dans la colonne coverFilename
+                $book->setCoverFilename($newFilename);
+            }
+
+
             $entityManager->persist($book);
             $entityManager->flush();
 
-            // permet d'enregistré un message qui devra ensuite être affiché dans le twig
             $this->addFlash('success', "Le livre a bien été enregistré !");
-
             return $this->redirectToRoute('admin_books');
         }
 
-        // j'envoie à mon twig la variable contenant le formulaire
-        // préparé pour l'affichage (avec la méthode createView())
         return $this->render("admin/book_create.html.twig", [
             'bookForm' => $bookForm->createView()
         ]);
